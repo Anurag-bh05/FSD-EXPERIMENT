@@ -27,10 +27,7 @@ const App = () => {
       <nav style={{ display: "flex", justifyContent: "center", gap: "32px", padding: "20px", background: "#ffffff", borderBottom: "1px solid #e5e7eb", fontFamily: "system-ui, sans-serif" }}>
         <Link to="/" style={{ textDecoration: "none", color: "#374151", fontWeight: "600", fontSize: "16px" }}>Home</Link>
         {isAuthenticated && (
-          <>
-            <Link to="/dashboard" style={{ textDecoration: "none", color: "#374151", fontWeight: "600", fontSize: "16px" }}>Dashboard</Link>
-            <Link to="/admin" style={{ textDecoration: "none", color: "#374151", fontWeight: "600", fontSize: "16px" }}>Admin Panel</Link>
-          </>
+          <Link to="/dashboard" style={{ textDecoration: "none", color: "#374151", fontWeight: "600", fontSize: "16px" }}>Dashboard</Link>
         )}
         {!isAuthenticated ? (
           <Link to="/login" style={{ textDecoration: "none", color: "#aa3bff", fontWeight: "700", fontSize: "16px" }}>Login</Link>
@@ -46,24 +43,13 @@ const App = () => {
         <Route path="/unauthorized" element={
           <div style={{ textAlign: "center", marginTop: "80px", fontFamily: "system-ui, sans-serif" }}>
             <h2 style={{ color: "#ef4444" }}>Access Denied</h2>
-            <p>You do not have the required role to view this page.</p>
+            <p>You do not have the required permissions to view this page.</p>
           </div>
         } />
 
         <Route path="/dashboard" element={
-          <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={["viewer", "admin"]} userRole={userRole}>
-            <Dashboard />
-          </ProtectedRoute>
-        } />
-
-        <Route path="/admin" element={
-          <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={["admin"]} userRole={userRole}>
-            <div style={{ textAlign: "center", marginTop: "80px", fontFamily: "system-ui, sans-serif" }}>
-              <h2 style={{ color: "#aa3bff" }}>Admin Panel</h2>
-              <button style={{ marginTop: "20px", padding: "12px 24px", background: "#ef4444", color: "#ffffff", border: "none", borderRadius: "8px", fontWeight: "bold", cursor: "pointer" }}>
-                Delete System Data
-              </button>
-            </div>
+          <ProtectedRoute isAuthenticated={isAuthenticated} allowedRoles={["viewer", "admin", "editor"]} userRole={userRole}>
+            <Dashboard userRole={userRole} />
           </ProtectedRoute>
         } />
       </Routes>
